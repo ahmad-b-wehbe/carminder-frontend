@@ -1,0 +1,47 @@
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <div class="p-field">
+    <label for="email">Email</label>
+    <input id="email" type="email" formControlName="email" pInputText />
+    <div
+      *ngIf="
+        formGroup.get('email')?.invalid &&
+        (formGroup.get('email')?.dirty || formGroup.get('email')?.touched)
+      "
+      class="alert alert-danger"
+    >
+      <div *ngIf="formGroup.get('email')?.hasError('required')">
+        email is required.
+      </div>
+      <div *ngIf="formGroup.get('email')?.hasError('email')">
+        email should be valid
+      </div>
+    </div>
+  </div>
+  <div class="p-field">
+    <label for="password">Password</label>
+    <input id="password" type="password" formControlName="password" pPassword />
+    <div
+      *ngIf="
+        formGroup.get('password')?.invalid &&
+        (formGroup.get('password')?.dirty || formGroup.get('password')?.touched)
+      "
+      class="alert alert-danger"
+    >
+      <div *ngIf="formGroup.get('password')?.hasError('required')">
+        password is required.
+      </div>
+      <div *ngIf="formGroup.get('password')?.hasError('minlength')">
+        password should be at least 8 characters long
+      </div>
+    </div>
+  </div>
+  <div class="p-field">
+    <button
+      class="p-button p-button-primary"
+      type="submit"
+      [disabled]="!formGroup.valid"
+    >
+      Login
+    </button>
+  </div>
+</form>
