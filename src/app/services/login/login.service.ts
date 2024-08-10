@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../../../environments/environment";
-import { Axios } from "axios";
+import axios from 'axios';
 
 @Injectable({
     providedIn: 'root'
@@ -8,11 +8,9 @@ import { Axios } from "axios";
 export class LoginService {
     private loginUrl = `${environment.baseurl}/login`;
 
-    constructor(private axios: Axios) { }
-
-    login(email: string, password: string) {
+    async login(email: string, password: string) {
         const body = { email, password };
-        return this.axios.request({
+        return await axios.request({
             method: "POST",
             url: this.loginUrl,
             data: body
