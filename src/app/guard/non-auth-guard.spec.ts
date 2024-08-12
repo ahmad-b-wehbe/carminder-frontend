@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth/auth.service';
-import { authenticationGuard } from './auth-guard';
+import { nonAuthenticationGuard } from './non-auth-guard';
 
-describe('AuthGuard', () => {
+describe('NonAuthGuard', () => {
     let authService: AuthService;
     let router: Router;
 
@@ -32,18 +32,18 @@ describe('AuthGuard', () => {
         router = TestBed.inject(Router);
     });
 
-    it('should allow access when user is authenticated', () => {
-        (authService.isLoggedIn as jest.Mock).mockReturnValueOnce(true);
+    it('should allow access when user is not authenticated', () => {
+        (authService.isLoggedIn as jest.Mock).mockReturnValueOnce(false);
 
-        let context = TestBed.runInInjectionContext(()=> authenticationGuard()({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot))
+        let context = TestBed.runInInjectionContext(()=> nonAuthenticationGuard()({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot))
         
         expect(context).toBeTruthy();
     });
 
-    it('should redirect to login page when user is not authenticated', () => {
-        (authService.isLoggedIn as jest.Mock).mockReturnValueOnce(false);
+    it('should redirect to home page when user is authenticated', () => {
+        (authService.isLoggedIn as jest.Mock).mockReturnValueOnce(true);
 
-        let context = TestBed.runInInjectionContext(()=> authenticationGuard()({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot))
+        let context = TestBed.runInInjectionContext(()=> nonAuthenticationGuard()({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot))
         
         expect(context).toBeFalsy();
     });

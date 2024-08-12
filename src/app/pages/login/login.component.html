@@ -1,47 +1,80 @@
-<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-  <div class="p-field">
-    <label for="email">Email</label>
-    <input id="email" type="email" formControlName="email" pInputText />
-    <div
-      *ngIf="
-        formGroup.get('email')?.invalid &&
-        (formGroup.get('email')?.dirty || formGroup.get('email')?.touched)
-      "
-      class="alert alert-danger"
+<div
+  class="flex flex-column justify-content-center align-items-center gap-5"
+  style="height: 90vh"
+>
+  <div class="flex flex-column justify-content-center align-items-center w-6">
+    <h1 class="text-xl text-primary">Create Account</h1>
+    <span class="text-sm w-18rem text-center font-medium"
+      >Create an account so you can track your car needs</span
     >
-      <div *ngIf="formGroup.get('email')?.hasError('required')">
-        email is required.
-      </div>
-      <div *ngIf="formGroup.get('email')?.hasError('email')">
-        email should be valid
+  </div>
+  <form
+    class="flex flex-column gap-3"
+    [formGroup]="formGroup"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="p-field">
+      <input
+        class="p-3 border-round border-1 border-white outline-none w-20rem bg-primary-50"
+        id="email"
+        type="email"
+        placeholder="Email"
+        formControlName="email"
+        pInputText
+      />
+      <div style="height: 5px">
+        @if(formGroup.get('email')?.invalid && (formGroup.get('email')?.dirty ||
+        formGroup.get('email')?.touched)){
+        @if(formGroup.get('email')?.hasError('required')){
+        <small class="ml-2 p-error block"> email is required. </small>
+        } @else if(formGroup.get('email')?.hasError('email')) {
+        <small class="ml-2 p-error block"> email should be valid </small>
+        }}
       </div>
     </div>
-  </div>
-  <div class="p-field">
-    <label for="password">Password</label>
-    <input id="password" type="password" formControlName="password" pPassword />
-    <div
-      *ngIf="
-        formGroup.get('password')?.invalid &&
-        (formGroup.get('password')?.dirty || formGroup.get('password')?.touched)
-      "
-      class="alert alert-danger"
-    >
-      <div *ngIf="formGroup.get('password')?.hasError('required')">
-        password is required.
-      </div>
-      <div *ngIf="formGroup.get('password')?.hasError('minlength')">
-        password should be at least 8 characters long
+    <div class="p-field">
+      <input
+        class="p-3 border-round border-1 border-white w-20rem bg-primary-50"
+        id="password"
+        type="password"
+        formControlName="password"
+        placeholder="Password"
+        aria-describedby="email-help"
+        pPassword
+      />
+      <div style="height: 10px">
+        @if(formGroup.get('password')?.invalid &&
+        (formGroup.get('password')?.dirty ||
+        formGroup.get('password')?.touched)){
+        @if(formGroup.get('password')?.hasError('required')){
+        <small class="ml-2 p-error block"> password is required. </small>
+        } @else if(formGroup.get('password')?.hasError('minlength')){
+        <small class="ml-2 p-error block">
+          password should be at least 8 characters long
+        </small>
+        } }
       </div>
     </div>
-  </div>
-  <div class="p-field">
+    @if(error != ''){
+    <small
+      class="p-error block text-center w-20rem"
+      style="word-wrap: break-word"
+      >{{ error }}</small
+    >
+    }
     <button
-      class="p-button p-button-primary"
+      class="p-button p-button-primary block shadow-3"
       type="submit"
       [disabled]="!formGroup.valid"
     >
-      Login
+      @if(this.loading){
+      <p-progressSpinner
+        styleClass="w-2rem h-2rem"
+        strokeWidth="5"
+        animationDuration="1.5s"
+      />
+      } @else { Login }
     </button>
-  </div>
-</form>
+  </form>
+  <div><a class="no-underline" href="">Already have an account</a></div>
+</div>
